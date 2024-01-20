@@ -1,5 +1,5 @@
 .button {
-    background-color: white;
+    background-color: rgb(74, 240, 243);
     color: black;
     font-size: 16px;
     border: 1px solid #61DBFB;
@@ -13,5 +13,12 @@
     &:hover {
         background-color: #61DBFB;
         color: rgb(17, 16, 16);
+    }
+
+    &-container {
+        margin-top: 1rem;
+        display: flex;
+        gap: .5rem;
+        justify-content: flex-end;
     }
 }
