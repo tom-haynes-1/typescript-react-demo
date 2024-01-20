@@ -1,17 +1,9 @@
-import React, { 
-  // useMemo, 
-  // useEffect 
-} from 'react';
-import PageTitle from './components/PageTitle';
+import React from 'react';
+import Form from './components/Form';
 
 const App = () => {
-
   return (
-    <>
-      <PageTitle 
-        title={ "Hi" }
-      />
-    </>
+    <Form />
   );
 };
 
