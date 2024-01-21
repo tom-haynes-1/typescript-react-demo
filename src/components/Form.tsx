@@ -4,33 +4,8 @@ import Button from "./Button";
 import UserForm from "./UserForm";
 import AddressForm from "./AddressForm";
 import AccountForm from "./AccountForm";
+import { FormData, initialValues } from "../types/FormTypes";
 import "../scss/form.scss";
-
-type FormData = {
-    firstName: string;
-    lastName: string;
-    age: string;
-    houseNumber: string;
-    street: string;
-    area: string;
-    city: string;
-    postcode: string;
-    email: string;
-    password: string;
-};
-
-export const initialValues: FormData = {
-    firstName: "",
-    lastName: "",
-    age: "",
-    houseNumber: "",
-    street: "",
-    area: "",
-    city: "",
-    postcode: "",
-    email: "",
-    password: ""
-};
 
 const Form = () => {
 
@@ -70,9 +45,8 @@ const Form = () => {
     if (!isLastStep) {
         goForwardAStep();
     } else {
-        alert("form complete, well done!")
+        alert("form complete, well done!");
     }
-    
   };
 
   return (
