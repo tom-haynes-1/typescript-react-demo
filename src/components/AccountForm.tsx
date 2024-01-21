@@ -1,19 +1,37 @@
 import React from "react";
 import FormWrapper from "./FormWrapper";
 
-// TODO: create into dynamic form components, not static JSX elements.
+interface AccountData {
+  email: string;
+  password: string;
+}
 
-const AccountForm = () => {
-    return (
-        <>
-            <FormWrapper title="Create Account">
-                <label>Email</label>
-                <input autoFocus required type="email" />
-                <label>Password</label>
-                <input required type="password" />
-            </FormWrapper>
-        </>
-    );
+type Props = AccountData & {
+  updateFields: (fields: Partial<AccountData>) => void;
+};
+
+const AccountForm = ({ email, password, updateFields }: Props) => {
+  return (
+    <>
+      <FormWrapper title="Create Account">
+        <label>Email</label>
+        <input
+          autoFocus
+          required
+          type="email"
+          value={email}
+          onChange={(e) => updateFields({ email: e.target.value })}
+        />
+        <label>Password</label>
+        <input
+          required
+          type="password"
+          value={password}
+          onChange={(e) => updateFields({ password: e.target.value })}
+        />
+      </FormWrapper>
+    </>
+  );
 };
 
 export default AccountForm;

@@ -7,7 +7,7 @@ type Props = {
     buttonCopy?: string;
     buttonColor?: string;
     buttonType: "button" | "submit" | "reset";
-    clickHandler: () => void;
+    clickHandler?: () => void;
 };
 
 const Button: React.FC<Props> = ({

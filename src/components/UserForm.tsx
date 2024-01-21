@@ -1,42 +1,50 @@
 import React from "react";
 import FormWrapper from "./FormWrapper";
 
-interface UserLabelNames {
+type UserData = {
     firstName: string;
     lastName: string;
     age: string;
 };
 
-type Props = {
-  labelNames: UserLabelNames[];
-  inputType: string;
-  ageType?: string;
+type Props = UserData & {
+  updateFields: (fields: Partial<UserData>) => void;
 };
 
-const UserForm = ({ 
-    labelNames, 
-    inputType,
-    ageType
+const UserForm = ({
+    firstName,
+    lastName,
+    age,
+    updateFields,
 }: Props) => {
-  
-    const elementInputs = [
-    { label: labelNames[0].firstName, type: inputType },
-    { label: labelNames[0].lastName, type: inputType },
-    { label: labelNames[0].age, type: ageType },
-  ];
 
   return (
     <>
-        <FormWrapper title="User Details">
-        {
-            elementInputs.map((config, index) => (
-                <React.Fragment key={ index }>
-                    <label>{ config.label }</label>
-                    <input type={ config.type } autoFocus={ index === 0 } required />
-                </React.Fragment>
-            ))
-        }
-        </FormWrapper>
+      <FormWrapper title="User Details">
+        <label>First Name</label>
+        <input
+          type="text"
+          required
+          autoFocus
+          value={firstName}
+          onChange={(e) => updateFields({ firstName: e.target.value })}
+        />
+        <label>Last Name</label>
+        <input
+          type="text"
+          required
+          value={lastName}
+          onChange={(e) => updateFields({ lastName: e.target.value })}
+        />
+        <label>Age</label>
+        <input
+          type="number"
+          required
+          min={1}
+          value={age}
+          onChange={(e) => updateFields({ age: e.target.value })}
+        />
+      </FormWrapper>
     </>
   );
 };

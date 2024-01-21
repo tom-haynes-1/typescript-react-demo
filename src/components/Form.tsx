@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent, useState } from "react";
 import useMultiStepForm from "../hooks/useMultiStepForm";
 import Button from "./Button";
 import UserForm from "./UserForm";
@@ -6,7 +6,42 @@ import AddressForm from "./AddressForm";
 import AccountForm from "./AccountForm";
 import "../scss/form.scss";
 
+type FormData = {
+    firstName: string;
+    lastName: string;
+    age: string;
+    houseNumber: string;
+    street: string;
+    area: string;
+    city: string;
+    postcode: string;
+    email: string;
+    password: string;
+};
+
+export const initialValues: FormData = {
+    firstName: "",
+    lastName: "",
+    age: "",
+    houseNumber: "",
+    street: "",
+    area: "",
+    city: "",
+    postcode: "",
+    email: "",
+    password: ""
+};
+
 const Form = () => {
+
+  const [formData, setFormData] = useState<FormData>(initialValues);
+
+  const updateFormDataFields = (fields: Partial<FormData>) => {
+    setFormData(prev => {
+        return { ...prev, ...fields }
+    })
+  };
+
   const {
     formStep,
     formSteps,
@@ -17,20 +52,32 @@ const Form = () => {
     goBackAStep,
   } = useMultiStepForm([
     <UserForm 
-        labelNames={[{firstName: "First Name", lastName: "Last Name", age: "Age"}]} 
-        inputType="text"
-        ageType="number"
+        {...formData}
+        updateFields={updateFormDataFields}    
     />,
     <AddressForm 
-        labelNames={[{houseNumber: "House Number", street: "Street", area: "Area", city: "City", postcode: "Postcode"}]}
-        inputType="text"
+        {...formData}
+        updateFields={ updateFormDataFields }
     />,
-    <AccountForm />
+    <AccountForm 
+        {...formData}
+        updateFields={ updateFormDataFields }
+    />
   ]);
+
+  const onSubmitHandler = (event: FormEvent) => {
+    event.preventDefault();
+    if (!isLastStep) {
+        goForwardAStep();
+    } else {
+        alert("form complete, well done!")
+    }
+    
+  };
 
   return (
     <div className="form-container">
-      <form>
+      <form onSubmit={ onSubmitHandler }>
         <div className="form-container__counter">
           {currentStepIndex + 1} / {formSteps.length}
         </div>
@@ -47,8 +94,7 @@ const Form = () => {
           )}
           <Button
             className="button"
-            buttonType="button"
-            clickHandler={goForwardAStep}
+            buttonType="submit"
           >
             {isLastStep ? "Submit" : "Next"}
           </Button>

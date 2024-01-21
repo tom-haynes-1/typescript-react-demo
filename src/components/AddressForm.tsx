@@ -1,7 +1,7 @@
 import React from "react";
 import FormWrapper from "./FormWrapper";
 
-interface AddressLabelNames {
+interface AddressData {
     houseNumber: string;
     street: string;
     area: string;
@@ -9,36 +9,59 @@ interface AddressLabelNames {
     postcode: string;
 };
 
-type Props = {
-    labelNames: AddressLabelNames[];
-    inputType: string;
+type Props = AddressData & {
+    updateFields: (fields: Partial<AddressData>) => void;
 };
 
 const AddressForm = ({
-    labelNames,
-    inputType,
+    houseNumber,
+    street,
+    area,
+    city,
+    postcode,
+    updateFields
 }: Props) => {
-
-    const elementInputs = [
-        { label: labelNames[0].houseNumber, type: inputType },
-        { label: labelNames[0].street, type: inputType },
-        { label: labelNames[0].area, type: inputType },
-        { label: labelNames[0].city, type: inputType },
-        { label: labelNames[0].postcode, type: inputType },
-    ];
 
     return (
         <>
-            <FormWrapper title="User Address">
-            {
-                elementInputs.map((config, index) => (
-                    <React.Fragment key={ index }>
-                        <label>{ config.label }</label>
-                        <input type={ config.type } autoFocus={ index === 0 } required />
-                    </React.Fragment>
-                ))
-            }
-            </FormWrapper>
+        <FormWrapper title="User Address">
+            <label>House Number</label>
+            <input
+            type="number"
+            required
+            autoFocus
+            value={houseNumber}
+            onChange={(e) => updateFields({ houseNumber: e.target.value })}
+            />
+            <label>Street</label>
+            <input
+            type="text"
+            required
+            value={street}
+            onChange={(e) => updateFields({ street: e.target.value })}
+            />
+            <label>Area</label>
+            <input
+            type="text"
+            required
+            value={area}
+            onChange={(e) => updateFields({ area: e.target.value })}
+            />
+            <label>City</label>
+            <input
+            type="text"
+            required
+            value={city}
+            onChange={(e) => updateFields({ city: e.target.value })}
+            />
+            <label>Postcode</label>
+            <input
+            type="text"
+            required
+            value={postcode}
+            onChange={(e) => updateFields({ postcode: e.target.value })}
+            />
+        </FormWrapper>
         </>
       );
 };
