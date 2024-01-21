@@ -1,16 +1,12 @@
 import React from "react";
 import FormWrapper from "./FormWrapper";
+import { FormAccountData } from "../../types/FormTypes";
 
-interface AccountData {
-  email: string;
-  password: string;
-}
-
-type Props = AccountData & {
-  updateFields: (fields: Partial<AccountData>) => void;
+type Props = FormAccountData & {
+  updateFields: (fields: Partial<FormAccountData>) => void;
 };
 
-const AccountForm = ({ email, password, updateFields }: Props) => {
+const UserAccountForm = ({ email, password, updateFields }: Props) => {
   return (
     <>
       <FormWrapper title="Create Account">
@@ -34,4 +30,4 @@ const AccountForm = ({ email, password, updateFields }: Props) => {
   );
 };
 
-export default AccountForm;
+export default UserAccountForm;

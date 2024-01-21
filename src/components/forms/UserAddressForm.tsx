@@ -1,19 +1,12 @@
 import React from "react";
 import FormWrapper from "./FormWrapper";
+import { FormAddressData } from "../../types/FormTypes";
 
-interface AddressData {
-    houseNumber: string;
-    street: string;
-    area: string;
-    city: string;
-    postcode: string;
+type Props = FormAddressData & {
+    updateFields: (fields: Partial<FormAddressData>) => void;
 };
 
-type Props = AddressData & {
-    updateFields: (fields: Partial<AddressData>) => void;
-};
-
-const AddressForm = ({
+const UserAddressForm = ({
     houseNumber,
     street,
     area,
@@ -66,4 +59,4 @@ const AddressForm = ({
       );
 };
 
-export default AddressForm;
+export default UserAddressForm;

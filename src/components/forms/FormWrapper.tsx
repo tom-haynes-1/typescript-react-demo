@@ -1,5 +1,5 @@
 import React from "react";
-import "../scss/form-wrapper.scss";
+import "../../scss/form-wrapper.scss";
 
 type Props = {
     title: string;

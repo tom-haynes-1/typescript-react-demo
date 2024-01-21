@@ -1,11 +1,11 @@
 import React, { FormEvent, useState } from "react";
-import useMultiStepForm from "../hooks/useMultiStepForm";
-import Button from "./Button";
-import UserForm from "./UserForm";
-import AddressForm from "./AddressForm";
-import AccountForm from "./AccountForm";
-import { FormData, initialValues } from "../types/FormTypes";
-import "../scss/form.scss";
+import useMultiStepForm from "../../hooks/useMultiStepForm";
+import Button from "../global/Button";
+import UserDetailsForm from "./UserDetailsForm";
+import UserAddressForm from "./UserAddressForm";
+import UserAccountForm from "./UserAccountForm";
+import { FormData, initialValues } from "../../types/FormTypes";
+import "../../scss/sign-up-form.scss";
 
 const Form = () => {
 
@@ -13,8 +13,8 @@ const Form = () => {
 
   const updateFormDataFields = (fields: Partial<FormData>) => {
     setFormData(prev => {
-        return { ...prev, ...fields }
-    })
+        return { ...prev, ...fields };
+    });
   };
 
   const {
@@ -26,18 +26,9 @@ const Form = () => {
     goForwardAStep,
     goBackAStep,
   } = useMultiStepForm([
-    <UserForm 
-        {...formData}
-        updateFields={updateFormDataFields}    
-    />,
-    <AddressForm 
-        {...formData}
-        updateFields={ updateFormDataFields }
-    />,
-    <AccountForm 
-        {...formData}
-        updateFields={ updateFormDataFields }
-    />
+    <UserDetailsForm {...formData} updateFields={updateFormDataFields} />,
+    <UserAddressForm {...formData} updateFields={updateFormDataFields} />,
+    <UserAccountForm {...formData} updateFields={updateFormDataFields} />,
   ]);
 
   const onSubmitHandler = (event: FormEvent) => {
@@ -47,6 +38,7 @@ const Form = () => {
     } else {
         alert("form complete, well done!");
     }
+
   };
 
   return (
@@ -59,7 +51,6 @@ const Form = () => {
         <div className="button-container">
           {!isFirstStep && (
             <Button
-              className="button"
               buttonType="button"
               clickHandler={goBackAStep}
             >
@@ -67,7 +58,6 @@ const Form = () => {
             </Button>
           )}
           <Button
-            className="button"
             buttonType="submit"
           >
             {isLastStep ? "Submit" : "Next"}
