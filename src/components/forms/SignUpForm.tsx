@@ -1,15 +1,20 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
 import Button from "../global/Button";
 import UserDetailsForm from "./UserDetailsForm";
 import UserAddressForm from "./UserAddressForm";
 import UserAccountForm from "./UserAccountForm";
+import LoadingSpinner from "../global/LoadingSpinner";
+import ValidationWrapper from "../global/ValidationWrapper";
 import { FormData, initialValues } from "../../types/FormTypes";
 import "../../scss/sign-up-form.scss";
+
 
 const Form = () => {
 
   const [formData, setFormData] = useState<FormData>(initialValues);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formValidationFailed, setFormValidationFailed] = useState<boolean>(false);
 
   const updateFormDataFields = (fields: Partial<FormData>) => {
     setFormData(prev => {
@@ -31,15 +36,58 @@ const Form = () => {
     <UserAccountForm {...formData} updateFields={updateFormDataFields} />,
   ]);
 
-  const onSubmitHandler = (event: FormEvent) => {
+  const validateInputs = () => {
+    // Implement your validation logic here
+    // For example, check if all required fields in formData are filled in
+    const requiredFieldsFilled = Object.values(formData).some(value => value !== '');
+    console.log("requiredFieldsFailed:", requiredFieldsFilled)
+
+    return !requiredFieldsFilled;
+  };
+
+  const simulateAsyncFunction = () => {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        console.log("async function complete");
+        resolve();
+      }, 2000)
+    });
+  };
+
+  const onSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
-    if (!isLastStep) {
+    setIsLoading(true);
+
+    try {
+
+      await simulateAsyncFunction();
+
+      if (!isLastStep && validateInputs()) {
+        setFormValidationFailed(true);
+      }
+
+      if (!isLastStep) {
         goForwardAStep();
+      } else {
+          alert("form complete, well done!");
+      }
+    } catch (error) {
+      console.error("something went wrong:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+ 
+  useEffect(() => {
+    if (validateInputs()) {
+      setFormValidationFailed(true);
     } else {
-        alert("form complete, well done!");
+      setFormValidationFailed(false);
     }
 
-  };
+    console.log("form validation falied:", formValidationFailed)
+    
+  }, [formValidationFailed]);
 
   return (
     <div className="form-container">
@@ -47,22 +95,31 @@ const Form = () => {
         <div className="form-container__counter">
           {currentStepIndex + 1} / {formSteps.length}
         </div>
-        {formStep}
-        <div className="button-container">
+        {isLoading && <LoadingSpinner />}
+        {
+          !isLoading && formStep
+        }
           {!isFirstStep && (
-            <Button
-              buttonType="button"
-              clickHandler={goBackAStep}
-            >
-              Back
-            </Button>
+            <ValidationWrapper validationFailed={ formValidationFailed }>
+                <Button
+                  className="button"
+                  buttonType="button"
+                  clickHandler={ goBackAStep }
+                >
+                  Back
+              </Button>
+            </ValidationWrapper>
+            
           )}
-          <Button
-            buttonType="submit"
-          >
-            {isLastStep ? "Submit" : "Next"}
-          </Button>
-        </div>
+          <ValidationWrapper validationFailed={ formValidationFailed }>
+            <Button
+              className="button"
+              buttonType="submit"
+              clickHandler={ () => {console.log("button clicked:", formValidationFailed)}}
+            >
+              {isLastStep ? "Submit" : "Next"}
+            </Button>
+          </ValidationWrapper>
       </form>
     </div>
   );

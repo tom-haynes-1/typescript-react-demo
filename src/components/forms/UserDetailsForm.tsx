@@ -9,8 +9,8 @@ type Props = FormUserData & {
 const UserDetailsForm = ({ 
     firstName, 
     lastName, 
-    age, 
-    updateFields 
+    age,
+    updateFields
 }: Props) => {
 
   const userDetails: FormInputs[] = [
@@ -18,6 +18,8 @@ const UserDetailsForm = ({
     { label: "Last Name", type: "text", key: "lastName" },
     { label: "Age", type: "number", key: "age" },
   ];
+
+  const requiredFields = typeof 'string' || 'number';
 
   return (
     <>
@@ -28,12 +30,12 @@ const UserDetailsForm = ({
                 <label>{ detail.label }</label>
                 <input
                     type={ detail.type }
-                    required={ detail.type !== "number" }
+                    required={ detail.type !== requiredFields }
                     min={ detail.type === "number" ? 1 : undefined }
                     autoFocus={ detail.key === "firstName" }
                     value={ (detail.key === "firstName" && firstName) || 
                             (detail.key === "lastName" && lastName) ||
-                            (detail.key === "age" && age) || "" 
+                            (detail.key === "age" && age) || ""
                         }
                     onChange={(e) => updateFields({ [detail.key]: e.target.value })}
                 />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../../scss/validation-wrapper.scss";
 
 type ValidationProps = {
     validationFailed: boolean;
@@ -10,19 +11,22 @@ const ValidationWrapper = ({
     children,
 }: ValidationProps) => {
 
-    const [validationErrorClass, setValidationErrorClass] = useState("");
+    const [validationErrorAnimation, setValidationErrorAnimation] = useState(false);
 
     useEffect(() => {
       if (validationFailed) {
-        setValidationErrorClass("validation-failed-shake");
-        window.setTimeout(() => {
-          setValidationErrorClass("");
+        setValidationErrorAnimation(true);
+        const timeOut = setTimeout(() => {
+          setValidationErrorAnimation(false);
         }, 800);
+
+        return () => clearTimeout(timeOut);
       }
     }, [validationFailed]);
 
+    const wrapperClasses = `validation-wrapper ${validationErrorAnimation && validationFailed ? `${'validation-failed-shake'}` : ''}`.trim();
     return (
-        <div className={ validationFailed ? `${validationErrorClass}`.trim() : "" }>
+        <div className={ wrapperClasses }>
             { children }
         </div>
     );

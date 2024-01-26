@@ -4,6 +4,7 @@ import "../../scss/button.scss";
 
 type Props = {
     children: React.ReactNode;
+    className: string;
     buttonCopy?: string;
     buttonColor?: string;
     buttonType: "button" | "submit" | "reset";
@@ -13,10 +14,11 @@ type Props = {
 
 const Button: React.FC<Props> = ({
     children,
+    className = "button",
     buttonCopy,
     buttonColor,
     buttonType,
-    formValidtionFailed = false,
+    formValidtionFailed = true,
     clickHandler,
 }) => {
 
@@ -25,7 +27,7 @@ const Button: React.FC<Props> = ({
             <div className="button-container">
                 <ValidationWrapper validationFailed={ formValidtionFailed }>
                     <button
-                        className={ "button" }
+                        className={ className }
                         onClick={ clickHandler }
                         color={ buttonColor }
                         type={ buttonType }
